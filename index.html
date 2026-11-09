@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="api-base" content="http://localhost:3000/api/v1">
+  <meta name="description" content="Explora libros, descubre categorías y encuentra tu próxima lectura en Campus Library.">
+  <title>Campus Library — Tu próxima lectura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#explorar" aria-label="Campus Library, inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M7 11.5c5.8-2 11.5-1.1 17 2.4v25c-5.5-3.5-11.2-4.4-17-2.4v-25Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M41 11.5c-5.8-2-11.5-1.1-17 2.4v25c5.5-3.5 11.2-4.4 17-2.4v-25Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M13 18h5M13 24h5M30 18h5M30 24h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">CAMPUS<span>LIBRARY</span></span>
+          <span class="brand-tagline">Lee. Descubre. Repite.</span>
+        </span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <button class="nav-link is-active" data-view="explorar" type="button">Explorar</button>
+        <button class="nav-link" data-view="disponibles" type="button">Disponibles</button>
+        <button class="nav-link" data-view="categorias" type="button">Categorías</button>
+      </nav>
+      <a class="api-link" href="http://localhost:3000/api-docs" target="_blank" rel="noreferrer">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="connection-label">Conectando API</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <section class="hero-panel" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> TU PRÓXIMO CAPÍTULO EMPIEZA AQUÍ</p>
+        <h1 id="hero-title">Hay un libro<br>para cada <span>curiosidad.</span></h1>
+        <p class="hero-description">Explora el catálogo de Campus Library. Encuentra tu próxima historia, idea o aventura.</p>
+        <form class="search-row" id="search-form" role="search">
+          <label class="search-field">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="sr-only">Buscar libros</span>
+            <input id="search-input" type="search" placeholder="Busca un libro, autor o editorial…" autocomplete="off">
+            <kbd>↵</kbd>
+          </label>
+          <label class="select-field">
+            <span class="sr-only">Filtrar por categoría</span>
+            <select id="category-filter">
+              <option value="">Todas las categorías</option>
+            </select>
+          </label>
+        </form>
+        <div class="hero-note"><span class="sparkle" aria-hidden="true">✳</span> Un mundo de historias te espera</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <span class="orbit orbit-one"></span>
+        <span class="orbit orbit-two"></span>
+        <div class="hero-book book-back"><span>IDEAS<br>QUE<br>VUELAN</span></div>
+        <div class="hero-book book-front">
+          <span class="cover-kicker">UNA NUEVA</span>
+          <span class="cover-title">forma<br>de ver<br>el mundo<span>.</span></span>
+          <span class="cover-rule"></span>
+          <span class="cover-author">TU PRÓXIMA LECTURA</span>
+        </div>
+        <span class="art-star star-one">✳</span>
+        <span class="art-star star-two">✦</span>
+      </div>
+      <div class="hero-index" aria-hidden="true">BIBLIOTECA / 01</div>
+    </section>
+
+    <section class="catalog-section" aria-labelledby="catalog-title">
+      <div class="section-topline">
+        <div>
+          <p class="eyebrow section-eyebrow"><span class="eyebrow-line"></span> CURADO PARA TI</p>
+          <h2 id="catalog-title">Explora la colección<span class="heading-dot">.</span></h2>
+        </div>
+        <label class="sort-control">
+          <span>Ordenar por</span>
+          <select id="sort-select" aria-label="Ordenar libros">
+            <option value="recent">Más nuevos</option>
+            <option value="title">Título A–Z</option>
+            <option value="stock">Más disponibles</option>
+          </select>
+        </label>
+      </div>
+      <div class="catalog-toolbar">
+        <div class="filter-tabs" role="group" aria-label="Filtrar catálogo">
+          <button class="filter-tab is-active" data-filter="all" type="button">Todos <span id="total-count">—</span></button>
+          <button class="filter-tab" data-filter="available" type="button">Con stock</button>
+          <button class="filter-tab" data-filter="unavailable" type="button">Agotados</button>
+        </div>
+        <p class="results-label" id="results-label" aria-live="polite">Cargando catálogo…</p>
+      </div>
+      <div id="book-grid" class="book-grid" aria-live="polite" aria-busy="true">
+        <div class="loading-card"><span class="loader"></span><span>Cargando libros…</span></div>
+      </div>
+      <div id="error-panel" class="error-panel" hidden>
+        <span class="error-symbol" aria-hidden="true">!</span>
+        <div>
+          <strong>No pudimos conectar con la biblioteca</strong>
+          <p id="error-message">Verifica que la API esté activa e inténtalo de nuevo.</p>
+        </div>
+        <button class="retry-button" id="retry-button" type="button">Reintentar</button>
+      </div>
+      <div id="empty-state" class="empty-state" hidden>
+        <span aria-hidden="true">⌕</span>
+        <h3>No encontramos libros</h3>
+        <p>Prueba con otra búsqueda o categoría.</p>
+        <button class="text-button" id="clear-filters" type="button">Limpiar filtros</button>
+      </div>
+    </section>
+
+    <section class="category-section" id="category-section" aria-labelledby="category-title">
+      <div class="category-intro">
+        <p class="eyebrow section-eyebrow"><span class="eyebrow-line"></span> SIGUE TU CURIOSIDAD</p>
+        <h2 id="category-title">Un estante para<br>cada <span>idea.</span></h2>
+      </div>
+      <div class="category-list" id="category-list">
+        <p class="category-placeholder">Las categorías aparecerán cuando se conecte la API.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-brand" href="#explorar">CAMPUS<span>LIBRARY</span></a>
+    <p>Hecho para quienes siempre quieren leer un poco más.</p>
+    <a href="https://github.com/perezcleidy069-sketch/campus_library" target="_blank" rel="noreferrer">Conoce la API <span aria-hidden="true">↗</span></a>
+  </footer>
+</body>
+</html>
