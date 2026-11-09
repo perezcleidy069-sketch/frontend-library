@@ -1,6 +1,6 @@
 # Campus Library
 
-Interfaz web adaptable para explorar el catálogo de Campus Library. Está inspirada en la navegación, el tema oscuro y los acentos turquesa de [GreekRank](https://github.com/perezcleidy069-sketch/greekrank), y consume los datos de la [Campus Library API](https://github.com/perezcleidy069-sketch/campus_library).
+Interfaz web adaptable para explorar el catálogo de Campus Library, conectada a la [Campus Library API](https://github.com/perezcleidy069-sketch/campus_library).
 
 ## Funcionalidades
 
